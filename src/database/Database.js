@@ -5,7 +5,7 @@
 import * as SQLite from "expo-sqlite";
 
 // Name der Datenbankdatei
-const databaseName = 'PlantDatabase.db';
+const databaseName = "PlantDatabase.db";
 
 // Instanz der Datenbank
 let dbInstance = null;
@@ -38,9 +38,9 @@ const getDbInstance = async () => {
  */
 const openDatabase = () => {
   try {
-    console.log('openDatabase wird aufgerufen');
+    console.log("openDatabase wird aufgerufen");
     const db = SQLite.openDatabase(databaseName);
-    console.log('Datenbank erfolgreich geöffnet:', db);
+    console.log("Datenbank erfolgreich geöffnet:", db);
     return Promise.resolve(db);
   } catch (error) {
     console.error("Fehler beim Öffnen der Datenbank:", error);
@@ -61,22 +61,22 @@ const initializeDatabase = (db) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS Pflanzen (PflanzenID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, PflanzenName TEXT, Standort TEXT, Kategorie TEXT, Erstellungsdatum DATE)',
+          "CREATE TABLE IF NOT EXISTS Pflanzen (PflanzenID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, PflanzenName TEXT, Standort TEXT, Kategorie TEXT, Bild TEXT, Erstellungsdatum DATE)",
           [],
           (tx, result) => {
-            console.log('Tabelle Plants erstellt:', result);
+            console.log("Tabelle Plants erstellt:", result);
             resolve(result);
           },
           (error) => {
-            console.log('Fehler beim Erstellen der Tabelle Plants:', error);
+            console.log("Fehler beim Erstellen der Tabelle Plants:", error);
             reject(error);
           }
         );
       },
       (error) => {
-        console.log('Fehler beim Starten der Transaktion:', error);
+        console.log("Fehler beim Starten der Transaktion:", error);
         reject(error);
-      },
+      }
     );
   });
 };
@@ -107,9 +107,9 @@ const clearTable = (db) => {
         );
       },
       (error) => {
-        console.log('Fehler beim Starten der Transaktion:', error);
+        console.log("Fehler beim Starten der Transaktion:", error);
         reject(error);
-      },
+      }
     );
   });
 };
@@ -122,52 +122,73 @@ const clearTable = (db) => {
  * @throws {Error} - Ein Fehler, falls beim Einfügen der Dummy-Daten auftritt.
  */
 const insertDummyData = (db) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          'INSERT INTO Pflanzen (Name, PflanzenName, Standort, Kategorie, Erstellungsdatum) VALUES (?, ?, ?, ?, ?)',
-          ['Pflanze 1', 'Blume', 'Garten', 'Zierpflanze', '2023-01-01'],
+          "INSERT INTO Pflanzen (Name, PflanzenName, Standort, Kategorie, Erstellungsdatum, Bild) VALUES (?, ?, ?, ?, ?, ?)",
+          [
+            "Pflanze 1",
+            "Blume",
+            "Garten",
+            "Zierpflanze",
+            "2023-01-01",
+            "https://www.infranken.de/storage/image/1/3/1/2/3262131_noscale_1ArrXd_35THwI.jpg",
+          ],
           (tx, result) => {
-            console.log('Dummy-Datensatz 1 eingefügt:', result);
+            console.log("Dummy-Datensatz 1 eingefügt:", result);
             resolve(result);
           },
           (error) => {
-            console.log('Fehler beim Einfügen von Dummy-Datensatz 1:', error);
+            console.log("Fehler beim Einfügen von Dummy-Datensatz 1:", error);
             reject(error);
           }
         );
 
         tx.executeSql(
-          'INSERT INTO Pflanzen (Name, PflanzenName, Standort, Kategorie, Erstellungsdatum) VALUES (?, ?, ?, ?, ?)',
-          ['Pflanze 2', 'Kaktus', 'Wohnzimmer', 'Zimmerpflanze', '2023-02-15'],
+          "INSERT INTO Pflanzen (Name, PflanzenName, Standort, Kategorie, Erstellungsdatum, Bild) VALUES (?, ?, ?, ?, ?, ?)",
+          [
+            "Pflanze 2",
+            "Kaktus",
+            "Wohnzimmer",
+            "Zimmerpflanze",
+            "2023-02-15",
+            "https://www.baywa-baumarkt.de/thumbnail/5e/02/e7/1681399412/K000055254_Kaktus_Schwiegermuttersitz_Goldkugelkaktus_28-30_ECHI-GRUS-2720_01_800x800.jpg",
+          ],
           (tx, result) => {
-            console.log('Dummy-Datensatz 2 eingefügt:', result);
+            console.log("Dummy-Datensatz 2 eingefügt:", result);
             resolve(result);
           },
           (error) => {
-            console.log('Fehler beim Einfügen von Dummy-Datensatz 2:', error);
+            console.log("Fehler beim Einfügen von Dummy-Datensatz 2:", error);
             reject(error);
           }
         );
 
         tx.executeSql(
-          'INSERT INTO Pflanzen (Name, PflanzenName, Standort, Kategorie, Erstellungsdatum) VALUES (?, ?, ?, ?, ?)',
-          ['Pflanze 3', 'Farn', 'Badezimmer', 'Zimmerpflanze', '2023-03-10'],
+          "INSERT INTO Pflanzen (Name, PflanzenName, Standort, Kategorie, Erstellungsdatum, Bild) VALUES (?, ?, ?, ?, ?, ?)",
+          [
+            "Pflanze 3",
+            "Farn",
+            "Badezimmer",
+            "Zimmerpflanze",
+            "2023-03-10",
+            "https://www.bund.net/fileadmin/_processed_/8/4/csm_farn_naturtipp_juni_b5b31ca623.jpg",
+          ],
           (tx, result) => {
-            console.log('Dummy-Datensatz 3 eingefügt:', result);
+            console.log("Dummy-Datensatz 3 eingefügt:", result);
             resolve(result);
           },
           (error) => {
-            console.log('Fehler beim Einfügen von Dummy-Datensatz 3:', error);
+            console.log("Fehler beim Einfügen von Dummy-Datensatz 3:", error);
             reject(error);
           }
         );
       },
       (error) => {
-        console.log('Fehler beim Starten der Transaktion:', error);
+        console.log("Fehler beim Starten der Transaktion:", error);
         reject(error);
-      },
+      }
     );
   });
 };
@@ -184,7 +205,7 @@ const getAllPlants = (db) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          'SELECT * FROM Pflanzen',
+          "SELECT * FROM Pflanzen",
           [],
           (tx, result) => {
             const len = result.rows.length;
@@ -197,15 +218,15 @@ const getAllPlants = (db) => {
             resolve(plants);
           },
           (error) => {
-            console.log('Fehler beim Abrufen aller Datensätze:', error);
+            console.log("Fehler beim Abrufen aller Datensätze:", error);
             reject(error);
           }
         );
       },
       (error) => {
-        console.log('Fehler beim Starten der Transaktion:', error);
+        console.log("Fehler beim Starten der Transaktion:", error);
         reject(error);
-      },
+      }
     );
   });
 };
@@ -223,22 +244,25 @@ const deletePlantById = (db, plantId) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          'DELETE FROM Pflanzen WHERE PflanzenID = ?',
+          "DELETE FROM Pflanzen WHERE PflanzenID = ?",
           [plantId],
           (tx, result) => {
             console.log(`Datensatz mit ID ${plantId} gelöscht:`, result);
             resolve(result);
           },
           (error) => {
-            console.log(`Fehler beim Löschen des Datensatzes mit ID ${plantId}:`, error);
+            console.log(
+              `Fehler beim Löschen des Datensatzes mit ID ${plantId}:`,
+              error
+            );
             reject(error);
           }
         );
       },
       (error) => {
-        console.log('Fehler beim Starten der Transaktion:', error);
+        console.log("Fehler beim Starten der Transaktion:", error);
         reject(error);
-      },
+      }
     );
   });
 };
@@ -251,30 +275,31 @@ const deletePlantById = (db, plantId) => {
  * @param {string} plantName - Der Pflanzenname.
  * @param {string} place - Der Standort der Pflanze.
  * @param {string} category - Die Kategorie der Pflanze.
+ * @param {string} image - Der Bildpfad oder URL der Pflanze.
  * @returns {Promise<any>} - Eine Promise, die den Erfolg des Einfügevorgangs signalisiert.
  * @throws {Error} - Ein Fehler, falls beim Einfügen der Pflanze auftritt.
  */
-const insertPlant = (db, name, plantName, place, category) => {
+const insertPlant = (db, name, plantName, place, category, image) => {
   return new Promise((resolve, reject) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          'INSERT INTO Pflanzen (Name, PflanzenName, Standort, Kategorie, Erstellungsdatum) VALUES (?, ?, ?, ?, ?)',
-          [name, plantName, place, category, getSysDate()],
+          "INSERT INTO Pflanzen (Name, PflanzenName, Standort, Kategorie, Bild, Erstellungsdatum) VALUES (?, ?, ?, ?, ?, ?)",
+          [name, plantName, place, category, image, getSysDate()],
           (tx, result) => {
-            console.log('Pflanze erfolgreich hinzugefügt:', result);
+            console.log("Pflanze erfolgreich hinzugefügt:", result);
             resolve(result);
           },
           (error) => {
-            console.log('Fehler beim Einfügen der Pflanze:', error);
+            console.log("Fehler beim Einfügen der Pflanze:", error);
             reject(error);
           }
         );
       },
       (error) => {
-        console.log('Fehler beim Starten der Transaktion:', error);
+        console.log("Fehler beim Starten der Transaktion:", error);
         reject(error);
-      },
+      }
     );
   });
 };
@@ -287,12 +312,12 @@ const insertPlant = (db, name, plantName, place, category) => {
 const getSysDate = () => {
   const today = new Date();
   const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
 
   const formattedDate = `${year}-${month}-${day}`;
   return formattedDate;
-}
+};
 
 /**
  * Gibt die Pflanzendaten für eine bestimmte Pflanzen-ID zurück.
@@ -307,24 +332,24 @@ const getPlantById = (db, plantId) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          'SELECT * FROM Pflanzen WHERE PflanzenID = ?',
+          "SELECT * FROM Pflanzen WHERE PflanzenID = ?",
           [plantId],
           (tx, result) => {
             if (result.rows.length > 0) {
               const plantData = result.rows.item(0);
               resolve(plantData);
             } else {
-              reject(new Error('Pflanze nicht gefunden'));
+              reject(new Error("Pflanze nicht gefunden"));
             }
           },
           (error) => {
-            console.log('Fehler beim Abrufen der Pflanze nach ID:', error);
+            console.log("Fehler beim Abrufen der Pflanze nach ID:", error);
             reject(error);
           }
         );
       },
       (error) => {
-        console.log('Fehler beim Starten der Transaktion:', error);
+        console.log("Fehler beim Starten der Transaktion:", error);
         reject(error);
       }
     );
@@ -340,33 +365,88 @@ const getPlantById = (db, plantId) => {
  * @param {string} plantName - Der aktualisierte Pflanzenname.
  * @param {string} place - Der aktualisierte Standort der Pflanze.
  * @param {string} category - Die aktualisierte Kategorie der Pflanze.
+ * @param {string} image - Der aktualisierte Bildpfad oder URL der Pflanze.
  * @returns {Promise<any>} - Eine Promise, die den Erfolg der Aktualisierung signalisiert.
  * @throws {Error} - Ein Fehler, falls beim Aktualisieren der Pflanzendaten auftritt.
  */
-const updatePlantById = (db, plantId, name, plantName, place, category) => {
+const updatePlantById = (
+  db,
+  plantId,
+  name,
+  plantName,
+  place,
+  category,
+  image
+) => {
   return new Promise((resolve, reject) => {
     db.transaction(
       (tx) => {
         tx.executeSql(
-          'UPDATE Pflanzen SET Name = ?, PflanzenName = ?, Standort = ?, Kategorie = ? WHERE PflanzenID = ?',
-          [name, plantName, place, category, plantId],
+          "UPDATE Pflanzen SET Name = ?, PflanzenName = ?, Standort = ?, Kategorie = ?, Bild = ? WHERE PflanzenID = ?",
+          [name, plantName, place, category, image, plantId],
           (tx, result) => {
             console.log(`Pflanze mit ID ${plantId} aktualisiert:`, result);
             resolve(result);
           },
           (error) => {
-            console.log(`Fehler beim Aktualisieren der Pflanze mit ID ${plantId}:`, error);
+            console.log(
+              `Fehler beim Aktualisieren der Pflanze mit ID ${plantId}:`,
+              error
+            );
             reject(error);
           }
         );
       },
       (error) => {
-        console.log('Fehler beim Starten der Transaktion:', error);
+        console.log("Fehler beim Starten der Transaktion:", error);
         reject(error);
       }
     );
   });
 };
 
-export { clearTable, deletePlantById, getAllPlants, getDbInstance, getPlantById, initializeDatabase, insertDummyData, insertPlant, openDatabase, updatePlantById };
+/**
+ * Löscht die Tabelle "Pflanzen" aus der Datenbank.     WIRD NUR IN DEV MODUS BENÖTIGT!
+ *
+ * @param {SQLite.SQLiteDatabase} db - Die Datenbankinstanz.
+ * @returns {Promise<any>} - Eine Promise, die den Erfolg des Löschvorgangs signalisiert.
+ * @throws {Error} - Ein Fehler, falls beim Löschen der Tabelle auftritt.
+ */
+const deletePlantsTable = (db) => {
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          "DROP TABLE IF EXISTS Pflanzen",
+          [],
+          (tx, result) => {
+            console.log("Tabelle Pflanzen erfolgreich gelöscht:", result);
+            resolve(result);
+          },
+          (error) => {
+            console.log("Fehler beim Löschen der Tabelle Pflanzen:", error);
+            reject(error);
+          }
+        );
+      },
+      (error) => {
+        console.log("Fehler beim Starten der Transaktion:", error);
+        reject(error);
+      }
+    );
+  });
+};
 
+export {
+  clearTable,
+  deletePlantById,
+  deletePlantsTable,
+  getAllPlants,
+  getDbInstance,
+  getPlantById,
+  initializeDatabase,
+  insertDummyData,
+  insertPlant,
+  openDatabase,
+  updatePlantById,
+};

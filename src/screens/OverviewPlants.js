@@ -5,24 +5,34 @@
  * @param {object} navigation - Das Navigation-Objekt für die Navigation zwischen Bildschirmen.
  */
 
-import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
-import { Button, IconButton, List, Portal, Modal as RNModal } from 'react-native-paper';
-import Background from '../components/Background';
-import Header from '../components/Header';
-import OverviewPlantView from '../components/OverviewPlantView';
-import { deletePlantById, getAllPlants, getDbInstance } from '../database/Database';
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
+import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import {
+  Button,
+  IconButton,
+  List,
+  Portal,
+  Modal as RNModal,
+} from "react-native-paper";
+import Background from "../components/Background";
+import Header from "../components/Header";
+import OverviewPlantView from "../components/OverviewPlantView";
+import {
+  deletePlantById,
+  getAllPlants,
+  getDbInstance,
+} from "../database/Database";
 
 export default function OverviewPlants({ navigation }) {
   // Bildschirmbreite für das Layout berechnen
-  const screenWidth = Dimensions.get('window').width * 0.95;
+  const screenWidth = Dimensions.get("window").width * 0.95;
 
   // States für die Komponente
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [plants, setPlants] = useState([]);
   const [isSortModalVisible, setIsSortModalVisible] = useState(false);
-  const [selectedSortOption, setSelectedSortOption] = useState('name');
+  const [selectedSortOption, setSelectedSortOption] = useState("name");
   const [db, setDb] = useState();
 
   // Daten von der Datenbank abrufen und aktualisieren
@@ -32,13 +42,13 @@ export default function OverviewPlants({ navigation }) {
       const db = await getDbInstance();
       setDb(db);
       const result = await getAllPlants(db);
-      console.log('Pflanzen geladen:', result);
+      console.log("Pflanzen geladen:", result);
       setPlants(result);
       sortPlants(result, selectedSortOption);
     } catch (error) {
-      console.log('Fehler beim Laden aller Pflanzen:', error);
+      console.log("Fehler beim Laden aller Pflanzen:", error);
     }
-  }
+  };
 
   // useFocusEffect-Hook für die Navigation und Aktualisierung
   useFocusEffect(
@@ -83,14 +93,16 @@ export default function OverviewPlants({ navigation }) {
   const sortPlants = (data, option) => {
     let sortedData = [...data];
     switch (option) {
-      case 'name':
+      case "name":
         sortedData.sort((a, b) => a.Name.localeCompare(b.Name));
         break;
-      case 'plant':
+      case "plant":
         sortedData.sort((a, b) => a.PflanzenName.localeCompare(b.PflanzenName));
         break;
-      case 'createdAt':
-        sortedData.sort((a, b) => new Date(b.Erstellungsdatum) - new Date(a.Erstellungsdatum));
+      case "createdAt":
+        sortedData.sort(
+          (a, b) => new Date(b.Erstellungsdatum) - new Date(a.Erstellungsdatum)
+        );
         break;
       default:
         break;
@@ -100,21 +112,37 @@ export default function OverviewPlants({ navigation }) {
 
   // Sortiermodal rendern
   const renderSortModal = () => (
-    <RNModal visible={isSortModalVisible} onDismiss={closeSortModal} contentContainerStyle={styles.modalContent}>
+    <RNModal
+      visible={isSortModalVisible}
+      onDismiss={closeSortModal}
+      contentContainerStyle={styles.modalContent}
+    >
       <List.Item
         title="Nach Name sortieren"
-        onPress={() => handleSortOptionSelect('name')}
-        right={() => <List.Icon icon={selectedSortOption === 'name' ? 'check' : 'cancel'} />}
+        onPress={() => handleSortOptionSelect("name")}
+        right={() => (
+          <List.Icon
+            icon={selectedSortOption === "name" ? "check" : "cancel"}
+          />
+        )}
       />
       <List.Item
         title="Nach Pflanze sortieren"
-        onPress={() => handleSortOptionSelect('plant')}
-        right={() => <List.Icon icon={selectedSortOption === 'plant' ? 'check' : 'cancel'} />}
+        onPress={() => handleSortOptionSelect("plant")}
+        right={() => (
+          <List.Icon
+            icon={selectedSortOption === "plant" ? "check" : "cancel"}
+          />
+        )}
       />
       <List.Item
         title="Nach Hinzugefügt am sortieren"
-        onPress={() => handleSortOptionSelect('createdAt')}
-        right={() => <List.Icon icon={selectedSortOption === 'createdAt' ? 'check' : 'cancel'} />}
+        onPress={() => handleSortOptionSelect("createdAt")}
+        right={() => (
+          <List.Icon
+            icon={selectedSortOption === "createdAt" ? "check" : "cancel"}
+          />
+        )}
       />
     </RNModal>
   );
@@ -129,7 +157,7 @@ export default function OverviewPlants({ navigation }) {
       place={item.Standort}
       category={item.Kategorie}
       onDelete={() => {
-        handleDelete(item.PflanzenID)
+        handleDelete(item.PflanzenID);
       }}
       navigation={navigation}
     />
@@ -144,12 +172,8 @@ export default function OverviewPlants({ navigation }) {
         <View style={{ height: 60 }} />
 
         {/* Filter-Icon für Sortierung */}
-        <View style={{ height: 50, alignSelf: 'flex-end' }}>
-          <IconButton
-            icon='filter-variant'
-            size={30}
-            onPress={openSortModal}
-          />
+        <View style={{ height: 50, alignSelf: "flex-end" }}>
+          <IconButton icon="filter-variant" size={30} onPress={openSortModal} />
         </View>
 
         {/* Liste der Pflanzen */}
@@ -162,7 +186,13 @@ export default function OverviewPlants({ navigation }) {
             onRefresh={handleRefresh}
           />
           {/* Button zum Hinzufügen einer Pflanze */}
-          <Button icon='plus' mode='contained' onPress={() => navigation.navigate('AddPlant')}>Hinzufügen</Button>
+          <Button
+            icon="plus"
+            mode="contained"
+            onPress={() => navigation.navigate("AddPlant")}
+          >
+            Hinzufügen
+          </Button>
         </View>
       </View>
       {/* Platzhalter am unteren Rand für das Modal */}
@@ -170,13 +200,13 @@ export default function OverviewPlants({ navigation }) {
       {/* Sortiermodal über Portal rendern */}
       <Portal>{renderSortModal()}</Portal>
     </Background>
-  )
+  );
 }
 
 // Styles für das Sortiermodal
 const styles = StyleSheet.create({
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
     margin: 20,
   },

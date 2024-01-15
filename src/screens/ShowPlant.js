@@ -6,17 +6,17 @@
  * @param {object} route - Die Route-Parameter, die Informationen über die ausgewählte Pflanze (plantId) enthalten.
  */
 
-import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import { Button, Card, IconButton, Text } from 'react-native-paper';
-import Background from '../components/Background';
-import Header from '../components/Header';
-import { getDbInstance, getPlantById } from '../database/Database';
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
+import { Alert, Dimensions, StyleSheet, View } from "react-native";
+import { Avatar, Button, Card, IconButton, Text } from "react-native-paper";
+import Background from "../components/Background";
+import Header from "../components/Header";
+import { getDbInstance, getPlantById } from "../database/Database";
 
 export default function ShowPlant({ navigation, route }) {
   // Bildschirmbreite für das Layout berechnen
-  const screenWidth = Dimensions.get('window').width * 0.95;
+  const screenWidth = Dimensions.get("window").width * 0.95;
   // Pflanzen-ID aus den Route-Parametern extrahieren
   const { plantId } = route.params;
   // Zustand für die geladene Pflanze initialisieren
@@ -41,49 +41,72 @@ export default function ShowPlant({ navigation, route }) {
       const db = await getDbInstance();
       // Pflanze anhand der ID aus der Datenbank abrufen
       const result = await getPlantById(db, plantId);
-      console.log('Pflanze geladen:', result);
+      console.log("Pflanze geladen:", result);
       // Geladene Pflanze im Zustand setzen
       setPlant(result);
     } catch (error) {
-      console.error('Fehler beim Laden der Pflanze:', error);
+      console.error("Fehler beim Laden der Pflanze:", error);
     }
   };
 
   // Funktion zum Navigieren zur Bearbeitungsseite der Pflanze
   const onEditPress = () => {
-    navigation.navigate('EditPlant', { plantId: plantId });
+    navigation.navigate("EditPlant", { plantId: plantId });
+  };
+
+  //Popup für nicht implementierte Funktionen
+  const showNothing = () => {
+    Alert.alert(
+      "Funktion nicht implementiert",
+      "Diese Funktion wurde noch nicht implementiert.",
+      [{ text: "OK", onPress: () => console.log("OK wurde gedrückt") }]
+    );
   };
 
   // Hauptrendermethode
   return (
     <Background>
       {/* Header-Komponente mit Titel und Navigationsfunktion */}
-      <Header title="Pflanze" onPress={() => navigation.navigate('OverviewPlants')}></Header>
+      <Header
+        title="Pflanze"
+        onPress={() => navigation.navigate("OverviewPlants")}
+      ></Header>
       <View style={{ flex: 1, width: screenWidth }}>
         {/* Abstandhalter für den Header */}
         <View style={{ height: 60 }} />
+        <View style={{ marginBottom: 10, marginTop: 10, alignSelf: "center" }}>
+          {/* Bild der Pflanze */}
+          <Avatar.Image size={200} source={{ uri: plant.Bild }} />
+        </View>
         {/* Card-Komponente für die Anzeige der Pflanzeninformationen */}
         <Card>
           <Card.Title
             title={plant.Name}
-            right={(props) => <IconButton icon='application-edit-outline' onPress={onEditPress} />}
+            right={(props) => (
+              <IconButton
+                icon="application-edit-outline"
+                onPress={onEditPress}
+              />
+            )}
           />
           <Card.Content>
             {/* Textkomponenten für verschiedene Pflanzeninformationen */}
             <Text variant="bodyMedium">Pflanze: {plant.PflanzenName}</Text>
-            <Text variant="bodyMedium">Hinzugefügt am: {plant.Erstellungsdatum}</Text>
+            <Text variant="bodyMedium">
+              Hinzugefügt am: {plant.Erstellungsdatum}
+            </Text>
             <Text variant="bodyMedium">Standort: {plant.Standort}</Text>
             <Text variant="bodyMedium">Kategorie: {plant.Kategorie}</Text>
           </Card.Content>
         </Card>
         {/* Button-Komponenten für zusätzliche Funktionen */}
-        <Button style={styles.button} mode="contained" onPress={() => {}}>
+        <Button style={styles.button} mode="contained" onPress={showNothing}>
           Notizen
         </Button>
-        <Button style={styles.button} mode="contained" onPress={() => {}}>
+        <Button style={styles.button} mode="contained" onPress={showNothing}>
           Pflanzen Info
         </Button>
-        <Button style={styles.button} mode="contained" onPress={() => {}}>
+        <Button style={styles.button} mode="contained" onPress={showNothing}>
           Pflegeplan
         </Button>
       </View>
