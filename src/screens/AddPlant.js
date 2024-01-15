@@ -7,7 +7,12 @@
  */
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
-import { Dimensions, View } from "react-native";
+import {
+  Dimensions,
+  KeyboardAvoidingView,
+  ScrollView,
+  View,
+} from "react-native";
 import { Avatar, Button } from "react-native-paper";
 import Background from "../components/Background";
 import Header from "../components/Header";
@@ -98,68 +103,78 @@ export default function AddPlant({ navigation }) {
       <View style={{ flex: 1, width: screenWidth }}>
         {/* Abstandhalter für den Header */}
         <View style={{ height: 60 }} />
-        {/* Bild für Pflanze hochladen */}
-        <View style={{ marginBottom: 10, marginTop: 10, alignSelf: "center" }}>
-          {selectedImage && (
-            <Avatar.Image size={200} source={{ uri: selectedImage }} />
-          )}
-        </View>
-        <Button mode="contained" onPress={pickImage}>
-          Bild auswählen
-        </Button>
-        {/* Eingabefelder für Name, Pflanze, Standort und Kategorie */}
-        <TextInput
-          label="Name"
-          returnKeyType="next"
-          autoCapitalize="none"
-          onChangeText={(text) => setName({ value: text })}
-          error={!!name.error}
-          errorText={name.error}
-          value={name.value}
-          autoCompleteType="off"
-          textContentType="none"
-          keyboardType="default"
-        />
-        <TextInput
-          label="Pflanze"
-          returnKeyType="next"
-          autoCapitalize="none"
-          onChangeText={(text) => setPlantName({ value: text })}
-          error={!!plantName.error}
-          errorText={plantName.error}
-          value={plantName.value}
-          autoCompleteType="off"
-          textContentType="none"
-          keyboardType="default"
-        />
-        <TextInput
-          label="Standort"
-          returnKeyType="next"
-          autoCapitalize="none"
-          onChangeText={(text) => setPlace({ value: text })}
-          error={!!place.error}
-          errorText={place.error}
-          value={place.value}
-          autoCompleteType="off"
-          textContentType="none"
-          keyboardType="default"
-        />
-        <TextInput
-          label="Kategorie"
-          returnKeyType="next"
-          autoCapitalize="none"
-          onChangeText={(text) => setCategory({ value: text })}
-          error={!!category.error}
-          errorText={category.error}
-          value={category.value}
-          autoCompleteType="off"
-          textContentType="none"
-          keyboardType="default"
-        />
-        {/* Button zum Hinzufügen einer Pflanze */}
-        <Button mode="contained" onPress={onCreate}>
-          Pflanze hinzufügen
-        </Button>
+        <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
+          <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps="handled">
+            {/* Bild für Pflanze hochladen */}
+            <View
+              style={{ marginBottom: 10, marginTop: 10, alignSelf: "center" }}
+            >
+              {selectedImage && (
+                <Avatar.Image size={200} source={{ uri: selectedImage }} />
+              )}
+            </View>
+            <Button mode="contained" onPress={pickImage}>
+              Bild auswählen
+            </Button>
+            {/* Eingabefelder für Name, Pflanze, Standort und Kategorie */}
+            <TextInput
+              label="Name"
+              returnKeyType="next"
+              autoCapitalize="none"
+              onChangeText={(text) => setName({ value: text })}
+              error={!!name.error}
+              errorText={name.error}
+              value={name.value}
+              autoCompleteType="off"
+              textContentType="none"
+              keyboardType="default"
+            />
+            <TextInput
+              label="Pflanze"
+              returnKeyType="next"
+              autoCapitalize="none"
+              onChangeText={(text) => setPlantName({ value: text })}
+              error={!!plantName.error}
+              errorText={plantName.error}
+              value={plantName.value}
+              autoCompleteType="off"
+              textContentType="none"
+              keyboardType="default"
+            />
+            <TextInput
+              label="Standort"
+              returnKeyType="next"
+              autoCapitalize="none"
+              onChangeText={(text) => setPlace({ value: text })}
+              error={!!place.error}
+              errorText={place.error}
+              value={place.value}
+              autoCompleteType="off"
+              textContentType="none"
+              keyboardType="default"
+            />
+            <TextInput
+              label="Kategorie"
+              returnKeyType="next"
+              autoCapitalize="none"
+              onChangeText={(text) => setCategory({ value: text })}
+              error={!!category.error}
+              errorText={category.error}
+              value={category.value}
+              autoCompleteType="off"
+              textContentType="none"
+              keyboardType="default"
+            />
+            {/* Button zum Hinzufügen einer Pflanze */}
+            <Button
+              mode="contained"
+              onPress={onCreate}
+              style={{ marginBottom: 30 }}
+            >
+              Pflanze hinzufügen
+            </Button>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     </Background>
   );
