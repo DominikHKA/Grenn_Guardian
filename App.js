@@ -9,10 +9,9 @@ import { Provider } from "react-native-paper";
 import "setimmediate";
 import {
   clearTable,
-  deletePlantsTable,
   getDbInstance,
   initializeDatabase,
-  insertDummyData,
+  insertDummyData
 } from "./src/database/Database";
 import { AddPlant, EditPlant, OverviewPlants, ShowPlant } from "./src/screens";
 import { theme } from "./src/theme/theme";

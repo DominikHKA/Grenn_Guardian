@@ -448,5 +448,6 @@ export {
   insertDummyData,
   insertPlant,
   openDatabase,
-  updatePlantById,
+  updatePlantById
 };
+
